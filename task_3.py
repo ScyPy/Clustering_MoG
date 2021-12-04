@@ -101,7 +101,15 @@ D = X.shape[1]
 
 pred_1 = get_predictions(mu,s,p,X_phonemes_1_2)
 sum = pred_1.sum(axis=1)
-print(pred_1)
+phenome_1_pred = np.array()
+for i in pred_1:
+    phenome_1_pred.put(i[0] + i[1] + i[2])
+
+
+print(pred_1.shape)
+print(phenome_1_pred.shape)
+
+
 #Dictionary to store parameters
 # GMM_parameters = {}
 # GMM_parameters['mu'] = mu
