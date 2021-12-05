@@ -76,45 +76,41 @@ plt.savefig(plot_filename)
 # Get predictions on samples from both phonemes 1 and 2, from a GMM with k components, pretrained on phoneme 2
 # Compare these predictions for each sample of the dataset, and calculate the accuracy, and store it in a scalar variable named "accuracy"
 
-########################################/
-npy_filename = 'data/GMM_params_phoneme_{:02}_k_{:02}.npy'.format(p_id_1, k)
-npy = np.load(npy_filename, allow_pickle=True)
-
-npy = np.ndarray.tolist(npy)
+########################################
 
 
+#Declare models
+npy_filename_1 = 'data/GMM_params_phoneme_{:02}_k_{:02}.npy'.format(p_id_1, k)
+npy_filename_2 = 'data/GMM_params_phoneme_{:02}_k_{:02}.npy'.format(p_id_1, k)
+#Load in phoneme1
+npy_1 = np.load(npy_filename_1, allow_pickle=True)
+
+#Convert to list to extract parameters
+npy_list_1 = np.ndarray.tolist(npy_1)
 
 #Extract mu, s p
-mu = npy['mu']
-s = npy['s']
-p = npy['p']
+mu = npy_list_1['mu']
+s = npy_list_1['s']
+p = npy_list_1['p']
 
+#Copy phonemes1_2 dataset
+X_phonemes_1_2_copy = X_phonemes_1_2.copy()
 
-"""""""""
-# as dataset X, we will use only the samples of the chosen phoneme
-X = npy.copy()
-# get number of samples
-N = X.shape[0]
-# get dimensionality of our dataset
-D = X.shape[1]
-"""""
+#Run get_predictions GMM
+pred_1 = get_predictions(mu,s,p,X_phonemes_1_2_copy)
 
-pred_1 = get_predictions(mu,s,p,X_phonemes_1_2)
-sum = pred_1.sum(axis=1)
-phenome_1_pred = np.array()
+sum1 = pred_1.sum(axis=1)
+
+#Sum
+phenome_1_pred = []
 for i in pred_1:
-    phenome_1_pred.put(i[0] + i[1] + i[2])
+    phenome_1_pred.append(i[0] + i[1] + i[2])
 
+#Load in phoneme 2
+np.load(npy_filename_2,allow_pickle=True)
+##Get Predictions for phoneme 2
+pred_2 = get_predictions(mu,s,p,X_phonemes_1_2)
 
-print(pred_1.shape)
-print(phenome_1_pred.shape)
-
-
-#Dictionary to store parameters
-# GMM_parameters = {}
-# GMM_parameters['mu'] = mu
-# GMM_parameters['s'] = s
-# GMM_parameters['p'] = p
 
 
 
