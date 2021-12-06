@@ -81,7 +81,7 @@ plt.savefig(plot_filename)
 
 #Declare models
 npy_filename_1 = 'data/GMM_params_phoneme_{:02}_k_{:02}.npy'.format(p_id_1, k)
-npy_filename_2 = 'data/GMM_params_phoneme_{:02}_k_{:02}.npy'.format(p_id_1, k)
+npy_filename_2 = 'data/GMM_params_phoneme_{:02}_k_{:02}.npy'.format(p_id_2, k)
 #Load in phoneme1
 npy_1 = np.load(npy_filename_1, allow_pickle=True)
 
@@ -99,22 +99,37 @@ X_phonemes_1_2_copy = X_phonemes_1_2.copy()
 #Run get_predictions GMM
 pred_1 = get_predictions(mu,s,p,X_phonemes_1_2_copy)
 
-sum1 = pred_1.sum(axis=1)
 
 #Sum
 phenome_1_pred = []
 for i in pred_1:
     phenome_1_pred.append(i[0] + i[1] + i[2])
 
+#Phoneme 2
 #Load in phoneme 2
-np.load(npy_filename_2,allow_pickle=True)
+npy_2 = np.load(npy_filename_2,allow_pickle=True)
+#convert to list
+npy_list_2 = np.ndarray.tolist(npy_2)
+
+mu_2 = npy_list_2['mu']
+s_2 = npy_list_2['s']
+p_2 = npy_list_2['p']
+
+
 ##Get Predictions for phoneme 2
-pred_2 = get_predictions(mu,s,p,X_phonemes_1_2)
+pred_2 = get_predictions(mu_2,s_2,p_2,X_phonemes_1_2_copy)
+#Sum
+phenome_2_pred = []
+for i in pred_2:
+    phenome_2_pred.append(i[0] + i[1] + i[2])
 
 
-
-
-#print('Accuracy using GMMs with {} components: {:.2f}%'.format(k, accuracy))
+#Predictions
+all_preds = np.ones(len(X_phonemes_1_2_copy))
+all_preds[phenome_1_pred >= phenome_2_pred] = 1
+header = phoneme_id[np.logical_or(phoneme_id==1, phoneme_id==2)]
+accuracy = np.sum(all_preds == header) / X_phonemes_1_2_copy.shape[0] * 100
+print('Accuracy using GMMs with {} components: {:.2f}%'.format(k, accuracy))
 
 ################################################
 # enter non-interactive mode of matplotlib, to keep figures open
