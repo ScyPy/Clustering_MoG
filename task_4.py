@@ -32,7 +32,9 @@ X_full = np.zeros((len(f1), 2))
 #########################################
 # Write your code here
 # Store f1 in the first column of X_full, and f2 in the second column of X_full
-
+for i in range(len(X_full)):
+    X_full[i].put(indices=0, values=f1[i])
+    X_full[i].put(indices=1, values=f2[i])
 ########################################/
 X_full = X_full.astype(np.float32)
 
@@ -47,7 +49,8 @@ k = 3
 # Fill X_phonemes_1_2 with the samples of X_full that belong to the chosen phonemes
 # To fill X_phonemes_1_2, you can leverage the phoneme_id array, that contains the ID of each sample of X_full
 
-# X_phonemes_1_2 = ...
+X_phonemes_1_2 = np.array(X_full[np.logical_or(phoneme_id == 1, phoneme_id == 2)])
+
 
 ########################################/
 
@@ -76,6 +79,7 @@ print('f2 range: {}-{} | {} points'.format(min_f2, max_f2, N_f2))
 # M should contain "0.0" in the points that belong to phoneme 1 and "1.0" in the points that belong to phoneme 2
 ########################################/
 
+xx,yy = np.meshgrid(np.linspace())
 ################################################
 # Visualize predictions on custom grid
 

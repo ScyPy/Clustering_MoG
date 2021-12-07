@@ -43,7 +43,8 @@ X_full = X_full.astype(np.float32)
 # number of GMM components
 k = 6
 # you can use the p_id variable, to store the ID of the chosen phoneme that will be used (e.g. phoneme 1, or phoneme 2)
-p_id = 2
+p_id  = 1
+
 
 #########################################
 # Write your code here
@@ -53,7 +54,9 @@ p_id = 2
 # Fill X_phoneme with the samples of X_full that belong to the chosen phoneme
 # To fill X_phoneme, you can leverage the phoneme_id array, that contains the ID of each sample of X_full
 
-X_phoneme = X_full[phoneme_id == p_id, :]
+#X_phoneme = X_full[phoneme_id == p_id, :]
+
+X_phoneme = X_full[phoneme_id == p_id]
 
 ########################################/
 

@@ -28,13 +28,16 @@ phoneme_id = data['phoneme_id']
 # frequencies f1 and f2
 f1 = data['f1']
 f2 = data['f2']
-
+f1_f2 = f1+f2
 # Initialize array containing f1, f2 & f1+f2, of all phonemes.
 X_full = np.zeros((len(f1), 3))
 #########################################
 # Write your code here
 # Store f1 in the first column of X_full, f2 in the second column of X_full and f1+f2 in the third column of X_full
-
+for i in range(len(X_full)):
+    X_full[i].put(indices=0, values=f1[i])
+    X_full[i].put(indices=1, values=f2[i])
+    X_full[i].put(indices=2, values=f1_f2[i])
 ########################################/
 X_full = X_full.astype(np.float32)
 
@@ -52,7 +55,7 @@ k = 3
 # Fill X_phoneme with the samples of X_full that belong to the chosen phoneme
 # To fill X_phoneme, you can leverage the phoneme_id array, that contains the ID of each sample of X_full
 
-# X_phoneme = ...
+X_phoneme = X_full[phoneme_id == p_id, :]
 
 ########################################/
 
@@ -127,7 +130,7 @@ for t in range(n_iter):
         #########################################
         # Write your code here
         # Suggest ways of overcoming the singularity
-
+        
         ########################################/
         p[i] = np.mean(Z[:,i])
     ax1.clear()
@@ -150,3 +153,6 @@ print('')
 # enter non-interactive mode of matplotlib, to keep figures open
 plt.ioff()
 plt.show()
+
+
+##f1_f2

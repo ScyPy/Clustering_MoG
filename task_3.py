@@ -101,14 +101,15 @@ pred_1 = get_predictions(mu,s,p,X_phonemes_1_2_copy)
 
 
 #Sum
-phenome_1_pred = []
-for i in pred_1:
-    phenome_1_pred.append(i[0] + i[1] + i[2])
+phenome_1_pred = pred_1.sum(axis=1)
+# for i in pred_1:
+#     phenome_1_pred.append(i[0] + i[1] + i[2])
 
 #Phoneme 2
 #Load in phoneme 2
 npy_2 = np.load(npy_filename_2,allow_pickle=True)
 #convert to list
+
 npy_list_2 = np.ndarray.tolist(npy_2)
 
 mu_2 = npy_list_2['mu']
@@ -119,17 +120,19 @@ p_2 = npy_list_2['p']
 ##Get Predictions for phoneme 2
 pred_2 = get_predictions(mu_2,s_2,p_2,X_phonemes_1_2_copy)
 #Sum
-phenome_2_pred = []
-for i in pred_2:
-    phenome_2_pred.append(i[0] + i[1] + i[2])
+phenome_2_pred = pred_2.sum(axis=1)
+# for i in pred_2:
+#     phenome_2_pred.append(i[0] + i[1] + i[2])
 
 
 #Predictions
-all_preds = np.ones(len(X_phonemes_1_2_copy))
-all_preds[phenome_1_pred >= phenome_2_pred] = 1
-header = phoneme_id[np.logical_or(phoneme_id==1, phoneme_id==2)]
-accuracy = np.sum(all_preds == header) / X_phonemes_1_2_copy.shape[0] * 100
-print('Accuracy using GMMs with {} components: {:.2f}%'.format(k, accuracy))
+all_preds = np.ones(len(X_phonemes_1_2_copy)) * 2
+all_preds[phenome_1_pred > phenome_2_pred] = 1
+
+
+headers = phoneme_id[np.logical_or(phoneme_id==1, phoneme_id==2)]
+accuracy = (1 - (np.sum(all_preds != headers) / X_phonemes_1_2_copy.shape[0]))
+print('Accuracy using GMMs with {} components: {:.2f}%'.format(k, accuracy * 100))
 
 ################################################
 # enter non-interactive mode of matplotlib, to keep figures open
