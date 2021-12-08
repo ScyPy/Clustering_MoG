@@ -96,20 +96,20 @@ p = npy_list_1['p']
 #Copy phonemes1_2 dataset
 X_phonemes_1_2_copy = X_phonemes_1_2.copy()
 
-#Run get_predictions GMM
+#Run get_predictions GMM, output P(X|mu,sigma) (high dimensionality)
 pred_1 = get_predictions(mu,s,p,X_phonemes_1_2_copy)
 
 
 #Sum
-phenome_1_pred = pred_1.sum(axis=1)
+phoneme_1_pred = pred_1.sum(axis=1)
 # for i in pred_1:
 #     phenome_1_pred.append(i[0] + i[1] + i[2])
 
 #Phoneme 2
 #Load in phoneme 2
 npy_2 = np.load(npy_filename_2,allow_pickle=True)
-#convert to list
 
+#convert to list
 npy_list_2 = np.ndarray.tolist(npy_2)
 
 mu_2 = npy_list_2['mu']
@@ -120,14 +120,17 @@ p_2 = npy_list_2['p']
 ##Get Predictions for phoneme 2
 pred_2 = get_predictions(mu_2,s_2,p_2,X_phonemes_1_2_copy)
 #Sum
-phenome_2_pred = pred_2.sum(axis=1)
+phoneme_2_pred = pred_2.sum(axis=1)
 # for i in pred_2:
 #     phenome_2_pred.append(i[0] + i[1] + i[2])
 
 
 #Predictions
 all_preds = np.ones(len(X_phonemes_1_2_copy)) * 2
-all_preds[phenome_1_pred > phenome_2_pred] = 1
+
+all_preds[phoneme_1_pred > phoneme_2_pred] = 1 ##Change
+
+
 
 
 headers = phoneme_id[np.logical_or(phoneme_id==1, phoneme_id==2)]

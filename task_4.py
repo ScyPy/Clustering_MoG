@@ -79,7 +79,13 @@ print('f2 range: {}-{} | {} points'.format(min_f2, max_f2, N_f2))
 # M should contain "0.0" in the points that belong to phoneme 1 and "1.0" in the points that belong to phoneme 2
 ########################################/
 
-xx,yy = np.meshgrid(np.linspace())
+
+#xx,yy = np.meshgrid(N_f1, N_f2], np.linspace(min_f1,max_f2))
+
+x = np.linspace(0, 1, min_f1)
+y = np.linspace(0, 1, max_f2)
+xx, yy = np.meshgrid(x,y, sparse=True)
+print(xx,yy)
 ################################################
 # Visualize predictions on custom grid
 
